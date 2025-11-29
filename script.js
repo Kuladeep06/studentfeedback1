@@ -210,4 +210,214 @@ function deleteForm(formId) {
     if (confirm(`Are you sure you want to delete Form ${formId}?`)) {
         alert(`CRUD Operation (Delete): Form ${formId} deleted (Requires backend/API call).`);
     }
+
+    /**
+ * ==============================
+ * 7. Registration & Account Creation
+ * ==============================
+ */
+function handleRegister(event) {
+ event.preventDefault();
+ const firstname = document.getElementById('firstname').value.trim();
+ const lastname = document.getElementById('lastname').value.trim();
+ const email = document.getElementById('email').value.trim();
+ const username = document.getElementById('username').value.trim();
+ const password = document.getElementById('password').value;
+ const confirmPassword = document.getElementById('confirm-password').value;
+ const role = document.getElementById('role').value;
+ const errorEl = document.getElementById('register-error');
+ const successEl = document.getElementById('register-success');
+ 
+ // Form Validation
+ if (!firstname || !lastname || !email || !username || !password || !confirmPassword || !role) {
+  errorEl.textContent = 'All fields are required.';
+  errorEl.style.display = 'block';
+  successEl.style.display = 'none';
+  return;
+ }
+ 
+ if (!email.includes('@')) {
+  errorEl.textContent = 'Please enter a valid email address.';
+  errorEl.style.display = 'block';
+  successEl.style.display = 'none';
+  return;
+ }
+ 
+ if (password.length < 8) {
+  errorEl.textContent = 'Password must be at least 8 characters long.';
+  errorEl.style.display = 'block';
+  successEl.style.display = 'none';
+  return;
+ }
+ 
+ if (password !== confirmPassword) {
+  errorEl.textContent = 'Passwords do not match.';
+  errorEl.style.display = 'block';
+  successEl.style.display = 'none';
+  return;
+ }
+ 
+ errorEl.style.display = 'none';
+ 
+ // Store registration data (In production, send to backend)
+ const userData = {
+  firstname,
+  lastname,
+  email,
+  username,
+  password,
+  role,
+  registrationDate: new Date().toISOString()
+ };
+ 
+ // Save to localStorage for demo purposes
+ const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+ existingUsers.push(userData);
+ localStorage.setItem('registeredUsers', JSON.stringify(existingUsers));
+ 
+ // Success message
+ successEl.textContent = 'Registration successful! You can now login with your credentials.';
+ successEl.style.display = 'block';
+ document.getElementById('register-form').reset();
+ 
+ // Redirect to login after 2 seconds
+ setTimeout(() => {
+  window.location.href = 'index.html';
+ }, 2000);
+}
+
+/**
+ * ==============================
+ * 8. Password Reset - Step 1: Email Verification
+ * ==============================
+ */
+function verifyEmail(event) {
+ event.preventDefault();
+ const email = document.getElementById('reset-email').value.trim();
+ const errorEl = document.getElementById('reset-error');
+ const successEl = document.getElementById('reset-success');
+ 
+ if (!email) {
+  errorEl.textContent = 'Please enter your email address.';
+  errorEl.style.display = 'block';
+  return;
+ }
+ 
+ if (!email.includes('@')) {
+  errorEl.textContent = 'Please enter a valid email address.';
+  errorEl.style.display = 'block';
+  return;
+ }
+ 
+ errorEl.style.display = 'none';
+ 
+ // Simulate email verification (In production, send actual email)
+ sessionStorage.setItem('resetEmail', email);
+ const securityCode = Math.floor(100000 + Math.random() * 900000).toString();
+ sessionStorage.setItem('securityCode', securityCode);
+ 
+ console.log(`Security code sent to ${email}: ${securityCode}`);
+ successEl.textContent = `Verification code sent to ${email}. Check your email or use: ${securityCode}`;
+ successEl.style.display = 'block';
+ 
+ // Move to step 2
+ setTimeout(() => {
+  document.getElementById('step-1').classList.add('hidden');
+  document.getElementById('step-2').classList.remove('hidden');
+ }, 2000);
+}
+
+/**
+ * ==============================
+ * 9. Password Reset - Step 2: Verify Security Code
+ * ==============================
+ */
+function verifySecurityCode(event) {
+ event.preventDefault();
+ const code = document.getElementById('security-code').value.trim();
+ const errorEl = document.getElementById('reset-error');
+ const successEl = document.getElementById('reset-success');
+ const storedCode = sessionStorage.getItem('securityCode');
+ 
+ if (!code) {
+  errorEl.textContent = 'Please enter the security code.';
+  errorEl.style.display = 'block';
+  return;
+ }
+ 
+ if (code !== storedCode) {
+  errorEl.textContent = 'Invalid security code. Please try again.';
+  errorEl.style.display = 'block';
+  return;
+ }
+ 
+ errorEl.style.display = 'none';
+ successEl.textContent = 'Code verified! Now create your new password.';
+ successEl.style.display = 'block';
+ 
+ // Move to step 3
+ setTimeout(() => {
+  document.getElementById('step-2').classList.add('hidden');
+  document.getElementById('step-3').classList.remove('hidden');
+ }, 1500);
+}
+
+/**
+ * ==============================
+ * 10. Password Reset - Step 3: Reset Password
+ * ==============================
+ */
+function resetPassword(event) {
+ event.preventDefault();
+ const newPassword = document.getElementById('new-password').value;
+ const confirmNewPassword = document.getElementById('confirm-new-password').value;
+ const errorEl = document.getElementById('reset-error');
+ const successEl = document.getElementById('reset-success');
+ 
+ // Validation
+ if (!newPassword || !confirmNewPassword) {
+  errorEl.textContent = 'Please enter and confirm your new password.';
+  errorEl.style.display = 'block';
+  return;
+ }
+ 
+ if (newPassword.length < 8) {
+  errorEl.textContent = 'Password must be at least 8 characters long.';
+  errorEl.style.display = 'block';
+  return;
+ }
+ 
+ if (newPassword !== confirmNewPassword) {
+  errorEl.textContent = 'Passwords do not match.';
+  errorEl.style.display = 'block';
+  return;
+ }
+ 
+ errorEl.style.display = 'none';
+ 
+ // Update password (In production, send to backend)
+ const email = sessionStorage.getItem('resetEmail');
+ const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+ const userIndex = users.findIndex(u => u.email === email);
+ 
+ if (userIndex !== -1) {
+  users[userIndex].password = newPassword;
+  localStorage.setItem('registeredUsers', JSON.stringify(users));
+ }
+ 
+ // Success message
+ successEl.textContent = 'Password reset successfully! Redirecting to login page...';
+ successEl.style.display = 'block';
+ document.getElementById('reset-password-form').reset();
+ 
+ // Clear session data
+ sessionStorage.removeItem('resetEmail');
+ sessionStorage.removeItem('securityCode');
+ 
+ // Redirect to login
+ setTimeout(() => {
+  window.location.href = 'index.html';
+ }, 2000);
+}
+
 }
