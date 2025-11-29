@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Student Feedback System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Student Feedback and Evaluation System</h1>
+        <nav id="guest-navigation">
+            <h3>Quick Access (Demo)</h3>
+            <a href="#" onclick="routeToPage('student')">Go to Student Feedback</a>
+            <a href="#" onclick="routeToPage('admin')">Go to Admin View</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section id="register-section">
+            <h2>Create New Account</h2>
+            <form id="register-form">
+                <label for="firstname">First Name:</label>
+                <input type="text" id="firstname" name="firstname" required>
+
+                <label for="lastname">Last Name:</label>
+                <input type="text" id="lastname" name="lastname" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+
+                <label for="role">Select Role:</label>
+                <select id="role" name="role" required>
+                    <option value="">-- Choose Role --</option>
+                    <option value="student">Student</option>
+                    <option value="instructor">Instructor</option>
+                </select>
+
+                <p id="register-error" class="error-message"></p>
+                <p id="register-success" class="success-message"></p>
+
+                <button type="submit" onclick="handleRegister(event)">Register</button>
+            </form>
+
+            <p>Already have an account? <a href="index.html">Login here</a></p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
