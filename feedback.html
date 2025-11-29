@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provide Feedback</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Provide Student Feedback</h1>
+        <nav>
+            <a href="#" onclick="routeToPage('home')">Home (Logout)</a>
+            <a href="#" onclick="viewSubmissions()">View My Submissions</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section id="feedback-form-section">
+            <h2>Course and Instructor Evaluation</h2>
+            <form id="course-feedback-form">
+                <label for="course-select">Select Course:</label>
+                <select id="course-select" name="course" required>
+                    <option value="">-- Choose Course --</option>
+                </select>
+
+                <label for="instructor-select">Select Instructor:</label>
+                <select id="instructor-select" name="instructor" required>
+                    <option value="">-- Choose Instructor --</option>
+                </select>
+
+                <label>Course Content Rating (1-5):</label>
+                <input type="number" name="content-rating" min="1" max="5" required>
+
+                <label for="comments">Suggestions/Comments:</label>
+                <textarea id="comments" name="comments" rows="4"></textarea>
+
+                <p id="feedback-error" class="error-message"></p>
+                <p id="feedback-success" class="success-message"></p>
+
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </section>
+
+        <section id="submission-history" class="hidden">
+            <h2>My Recent Feedback Submissions</h2>
+            <ul id="submission-list">
+                </ul>
+            <button onclick="hideSubmissions()">Hide Submissions</button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Form Validation & CRUD: Attach handler for submission
+        document.getElementById('course-feedback-form').addEventListener('submit', handleSubmitFeedback);
+        // API Integration: Load data on page load
+        document.addEventListener('DOMContentLoaded', fetchCoursesAndInstructors);
+    </script>
+</body>
+</html>

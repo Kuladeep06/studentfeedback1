@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback System - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Student Feedback and Evaluation System</h1>
+    </header>
+
+    <main class="container">
+        <section id="login-section">
+            <h2>User Login</h2>
+            <form id="login-form">
+                <label for="username">Username/ID:</label>
+                <input type="text" id="username" name="username" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                
+                <p id="login-error" class="error-message"></p>
+
+                <button type="submit">Login</button>
+            </form>
+        </section>
+
+        <nav id="guest-navigation">
+            <h3>Quick Access (Demo)</h3>
+            <button onclick="routeToPage('student')">Go to Student Feedback</button>
+            <button onclick="routeToPage('admin')">Go to Admin View</button>
+        </nav>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 FEDF-PS33</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Form Validation & Authentication: Attach handler to the form
+        document.getElementById('login-form').addEventListener('submit', handleLogin);
+    </script>
+</body>
+</html>

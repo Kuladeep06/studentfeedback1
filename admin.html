@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard - Data Analysis</h1>
+        <nav>
+            <a href="#" onclick="routeToPage('home')">Home (Logout)</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section id="form-management">
+            <h2>Manage Feedback Forms (CRUD)</h2>
+            <button onclick="openFormCreator()">Create New Form</button>
+            <div id="active-forms">
+                <h3>Current Active Forms</h3>
+                <ul>
+                    <li>Form A: Course Evaluation 
+                        <button onclick="updateForm('A')">Update</button> 
+                        <button onclick="deleteForm('A')">Delete</button>
+                    </li>
+                    <li>Form B: Institutional Services 
+                        <button onclick="updateForm('B')">Update</button> 
+                        <button onclick="deleteForm('B')">Delete</button>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        
+        <hr>
+
+        <section id="data-analysis">
+            <h2>Feedback Data Analysis</h2>
+            <p>Total Submissions: <strong id="total-submissions">0</strong></p>
+            <p>Overall average course content rating: <strong id="avg-rating">N/A</strong></p>
+            
+            <div style="height: 200px; background: #eee; border: 1px dashed #ccc; margin-top: 10px; display: flex; align-items: center; justify-content: center;">
+                
+            </div>
+            
+            <button onclick="fetchAndAnalyzeData()">Refresh Data (API Fetch)</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 FEDF-PS33</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // API Integration: Load analysis data on page load
+        document.addEventListener('DOMContentLoaded', fetchAndAnalyzeData);
+    </script>
+</body>
+</html>
